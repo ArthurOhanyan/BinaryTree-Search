@@ -14,6 +14,7 @@ public:
 			Node(const T&);
 			
 	};
+
 	BinaryTree();
 	~BinaryTree();
 	Node* insert_helper(Node*,const T&);
@@ -21,6 +22,19 @@ public:
 	void remove (const T&);
 	Node* del_node(Node*,const T&);
 	Node* find_node(Node*);
+	Node* search_helper(Node*, const T&);
+	bool search (const T&);
+	void find_min();
+	Node* find_min_helper(Node*);
+	void find_max();
+	Node* find_max_helper(Node*);
+	void successor(const T&);
+	Node* successor_helper(Node*,Node*,const T&);
+	void predecessor(const T&);
+	Node* predecessor_helper(Node*,Node*,const T&);
+	int height ();
+	int height_helper(Node*,int,int&);
+	
 	void print();
 
 private:
