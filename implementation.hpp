@@ -116,9 +116,10 @@ typename BinaryTree<T>::Node* BinaryTree<T>::del_node(Node* root, const T& val)
 			delete root;
 			return tmp;	
 		}
-
+			
 		Node* tmp = find_node(root -> m_right);
 		root -> m_val = tmp -> m_val;
+		
 		root -> m_right = del_node(root -> m_right, root -> m_val);
 	}
 
@@ -295,16 +296,17 @@ typename BinaryTree<T>::Node* BinaryTree<T>::predecessor_helper(Node* root, Node
 template <typename T>
 int BinaryTree<T>::height()
 {
-	int tmp_num = 0;
-	return height_helper(root,0,tmp_num);
+	int tmp_num = 1;
+	height_helper(root,1,tmp_num);
+	return tmp_num;
 }
 
 template <typename T>
-int BinaryTree<T>::height_helper(Node* root, int i, int& num){
+void BinaryTree<T>::height_helper(Node* root, int i, int& num){
 	
 	if (root == nullptr){
 		
-		return num;
+		return;
 	}
 
 	if (i > num){
@@ -312,19 +314,135 @@ int BinaryTree<T>::height_helper(Node* root, int i, int& num){
 		num = i;
 	}
 
-	return height_helper(root -> m_left, i + 1, num);
-	return height_helper(root -> m_right, i + 1, num);
+	height_helper(root -> m_left, i + 1, num);
+	height_helper(root -> m_right, i + 1, num);
+}
+
+template <typename T>
+bool BinaryTree<T>::isValid()
+{
+	return isValid_helper(root);
+}
+
+template <typename T>
+bool BinaryTree<T>::isValid_helper(Node* root)
+{
+	if (!root){
+		
+		return true;
+	}
+
+	if (root -> m_left && root -> m_left -> m_val > root -> m_val){
+		
+		return false;
+	}
+
+	if (root -> m_right && root -> m_right -> m_val < root -> m_val){
+	
+		return false;
+	}
+
+	bool left = isValid_helper(root -> m_left);
+	bool rigth = isValid_helper(root -> m_right);
+
+	if (left && rigth){
+		
+		return true;
+	}
+
+	return false;
+}
+
+template <typename T>
+int BinaryTree<T>::size()
+{
+	int tmp_size = 0;
+	size_helper(root,tmp_size);
+	return tmp_size;
+
+}
+
+template <typename T>
+void BinaryTree<T>::size_helper(Node* root, int& size)
+{
+	if (!root){
+		
+		return;
+	}
+	++size;
+	size_helper(root -> m_left,size);
+	size_helper(root -> m_right,size);
 }
 
 template <typename T>
 typename BinaryTree<T>::Node* BinaryTree<T>::find_node(Node* root)
 {
-	if (root == nullptr){
+	if (root -> m_left == nullptr){
 		
 		return root;
 	}
 
 	return find_node(root -> m_left);
+}
+
+template <typename T>
+void BinaryTree<T>::inOrder()
+{
+	inOrder_helper(root);
+	std::cout << std::endl;
+}
+
+template <typename T>
+void BinaryTree<T>::inOrder_helper(Node* root)
+{
+	if (!root){
+		
+		return;
+	}
+
+	inOrder_helper(root -> m_left);
+	std::cout << " " << root -> m_val;
+	inOrder_helper(root -> m_right);
+}
+
+template <typename T>
+void BinaryTree<T>::preOrder()
+{
+	preOrder_helper(root);
+	std::cout << std::endl;
+}
+
+template <typename T>
+void BinaryTree<T>::preOrder_helper(Node* root)
+{
+	if (!root){
+		
+		return;
+	}
+
+	std::cout << " " << root -> m_val;
+	preOrder_helper(root -> m_left);
+	preOrder_helper(root -> m_right);
+}
+
+template <typename T>
+void BinaryTree<T>::postOrder()
+{
+	postOrder_helper(root);
+	std::cout << std::endl;
+}
+
+template <typename T>
+void BinaryTree<T>::postOrder_helper(Node* root)
+{
+	if (!root){
+		
+		return;
+	}
+
+	postOrder_helper(root -> m_left);
+	postOrder_helper(root -> m_right);
+	std::cout << " " << root -> m_val;
 }
 
 template <typename T>

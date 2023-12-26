@@ -33,8 +33,17 @@ public:
 	void predecessor(const T&);
 	Node* predecessor_helper(Node*,Node*,const T&);
 	int height ();
-	int height_helper(Node*,int,int&);
-	
+	void height_helper(Node*,int,int&);
+	bool isValid();
+	bool isValid_helper(Node*);
+	int size();
+	void size_helper(Node*,int&);	
+	void inOrder();
+	void inOrder_helper(Node*);
+	void preOrder();
+	void preOrder_helper(Node*);
+	void postOrder();
+	void postOrder_helper(Node*);
 	void print();
 
 private:

@@ -14,8 +14,6 @@ int main ()
 	bin.insert(33);
 	bin.insert(45);
 	bin.print();
-	bin.remove(8);
-	bin.print();
 	std::cout << "search result is :  " <<  bin.search(33) << std::endl;
 	bin.find_min();
 	bin.find_max();
@@ -23,6 +21,10 @@ int main ()
 	bin.predecessor(99);
 	bin.print();
 	std::cout << "The height of Tree is :: " << bin.height() << std::endl;
-
+	std::cout << " isValid() :: " << std::boolalpha << bin.isValid() << std::endl;
+	std::cout << " The size of Tree is :: " << bin.size() << std::endl;
+	bin.inOrder();
+	bin.preOrder();
+	bin.postOrder();
 
 }
