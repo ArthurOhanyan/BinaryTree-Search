@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 template <typename T>
 class BinaryTree 
@@ -44,8 +45,22 @@ public:
 	void preOrder_helper(Node*);
 	void postOrder();
 	void postOrder_helper(Node*);
-	void print();
-
+	void level_order_print();
+	bool contains(const T&);
+	void clear();
+	void clear_helper(Node*&);
+	std::vector<T> seriallized();
+	void seriallized_helper(Node*,std::vector<T>&);
+	void range_query(const T&,const T&);
+	void range_query_helper(Node*,const T&,const T&);
+	void copy();
+	Node* copy_helper(Node*, const T&);
+	void k_smallest(T);
+	Node* k_smallest_helper(Node*, T&);
+	void k_bigest(T);
+	Node* k_bigest_helper(Node*,T&);
+	void update(const T&, const T&);
+	Node* update_helper(Node*, const T&, const T&);
 private:
 	Node* root;
 			

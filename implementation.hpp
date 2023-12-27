@@ -1,5 +1,6 @@
 #include <iostream>
 #include <queue>
+#include <vector>
 
 template <typename T>
 BinaryTree<T>::BinaryTree()
@@ -43,8 +44,14 @@ void BinaryTree<T>::insert(const T& val)
 	
 
 template <typename T>
-void BinaryTree<T>::print()
+void BinaryTree<T>::level_order_print()
 {
+	if (!size()){
+		
+		std::cout << " The Tree is empty " << std::endl;
+		return;
+	}
+
 	if (!root){
 		
 		return;
@@ -52,28 +59,25 @@ void BinaryTree<T>::print()
 	
 	std::queue<Node*> qu;
 	qu.push(root);
-	std::cout << " " << root -> m_val << std::endl;
+	//std::cout << " " << root -> m_val << std::endl;
 	
 	while(!qu.empty()){
 		
 		Node* tmp = qu.front();
-		
+		std::cout << " " << tmp -> m_val ;	
 		if (tmp -> m_left){
 			
 			qu.push(tmp -> m_left);
-			std::cout << " " << tmp -> m_left -> m_val;
+			
 		}
 
 		if (tmp -> m_right){
 			
 			qu.push(tmp -> m_right);
-			std::cout << " " << tmp -> m_right -> m_val;
+			
 		}
 
-		//std::cout << " " << qu.front() -> m_val << std::endl;
 		qu.pop();
-		//std::cout << std::endl;
-
 	}
 
 	std::cout << std::endl;
@@ -443,6 +447,217 @@ void BinaryTree<T>::postOrder_helper(Node* root)
 	postOrder_helper(root -> m_left);
 	postOrder_helper(root -> m_right);
 	std::cout << " " << root -> m_val;
+}
+
+template <typename T>
+bool BinaryTree<T>::contains(const T& val)
+{
+	return search(val);
+}
+
+template <typename T>
+void BinaryTree<T>::clear()
+{
+	clear_helper(root);	
+}
+
+template <typename T>
+void BinaryTree<T>::clear_helper(Node*& root)
+{
+	if (!root){
+		
+		return;
+	}
+
+	clear_helper(root -> m_left);
+	clear_helper(root -> m_right);
+	//std::cout << " " << root -> m_val ;	
+	delete root;
+	root = nullptr;
+}
+
+template <typename T>
+std::vector<T> BinaryTree<T>::seriallized()
+{
+	std::vector<T> vec;
+	seriallized_helper(root,vec);
+	return vec;
+
+}
+
+template <typename T>
+void BinaryTree<T>::seriallized_helper(Node* root, std::vector<T>& vec)
+{
+
+	if (!root){
+		
+		return;
+	}
+	
+	vec.push_back(root -> m_val);
+	seriallized_helper(root -> m_left,vec);
+	seriallized_helper(root -> m_right,vec);
+
+}
+
+template <typename T>
+void BinaryTree<T>::range_query(const T& start, const T& end)
+{
+
+	range_query_helper(root,start,end);
+	std::cout << std::endl;
+}
+
+template <typename T>
+void BinaryTree<T>::range_query_helper(Node* root,const T& start,const T& end)
+{
+	if (!root){
+		
+		return;
+	}
+
+	if (root -> m_val >= start && root -> m_val <= end){
+		
+		std::cout << " " << root -> m_val ;
+	}
+
+	range_query_helper(root -> m_left,start,end);
+	range_query_helper(root -> m_right,start,end);
+
+
+}
+
+template <typename T>
+void BinaryTree<T>::copy()
+{
+	Node* tmp = copy_helper(root,root -> m_val);
+	inOrder_helper(tmp);
+	std::cout << std::endl;
+}
+
+template <typename T>
+typename BinaryTree<T>::Node* BinaryTree<T>::copy_helper(Node* root, const T& val)
+{
+	if (!root){
+		
+		return nullptr;
+	}
+
+	Node* tmp = new Node(root -> m_val);
+	tmp -> m_left = copy_helper(root -> m_left, root -> m_left -> m_val);
+	tmp -> m_right = copy_helper(root -> m_right, root -> m_right -> m_val);
+	return tmp;
+}
+
+template <typename T>
+void BinaryTree<T>::k_smallest(T val)
+{
+	Node* tmp = k_smallest_helper(root,val);
+	if (!tmp){
+		
+		std::cout << " INVALID INPUT " << std::endl;
+		return;
+	}
+	std::cout << " k smallest =  " << tmp -> m_val << std::endl;
+}
+
+template <typename T>
+typename BinaryTree<T>::Node* BinaryTree<T>::k_smallest_helper(Node* root, T& val)
+{
+	if (!root){
+		
+		return root;
+	}
+
+	Node* tmp = k_smallest_helper(root -> m_left,val);
+
+	if (tmp){
+		
+		return tmp;
+	}
+
+	--val;
+	if (val == 0){
+		
+		return root;
+	}
+
+	return k_smallest_helper(root -> m_right, val);
+}
+
+template <typename T>
+void BinaryTree<T>::k_bigest(T val)
+{
+	Node* tmp = k_bigest_helper(root,val);
+	if (tmp){
+		
+		std::cout << " k bigest = " << tmp -> m_val << std::endl;
+		return;
+	}
+
+	std::cout << " INVALID VALUE " << std::endl;
+
+}
+
+template <typename T>
+typename BinaryTree<T>::Node* BinaryTree<T>::k_bigest_helper(Node* root, T& val)
+{
+	if (!root){
+		
+		return root;
+	}
+
+	Node* tmp = k_bigest_helper(root -> m_right,val);
+	if (tmp){
+		
+		return tmp;
+	}
+
+	--val;
+	
+	if (val == 0){
+		
+		return root;
+	}
+
+	return k_bigest_helper(root -> m_left,val);
+}
+
+template <typename T>
+void BinaryTree<T>::update(const T& current, const T& new_val)
+{
+	Node* tmp = update_helper(root,current,new_val);
+	if (!tmp){
+		
+		std::cout << " Invalid value " << std::endl;
+		return;
+	}	
+	std::cout << " the value changed :: " << tmp -> m_val << std::endl;
+}
+
+template <typename T>
+typename BinaryTree<T>::Node* BinaryTree<T>::update_helper(Node* root , const T& current, const T& new_val)
+{
+	if (!root){
+		
+		return root;
+	}
+
+	if (root -> m_val == current){
+		
+		 root -> m_val = new_val;
+		return root;
+	
+	} else if (current > root -> m_val){
+		
+		return update_helper(root -> m_right, current, new_val);
+	
+	} else {
+		
+		return update_helper(root -> m_left, current, new_val);
+	} 
+	
+	
 }
 
 template <typename T>
